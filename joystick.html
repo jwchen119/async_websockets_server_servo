@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+</head> 
+
+<body style="overflow:hidden">
+	
+      <script type = "text/javascript">
+          var Socket = null;
+          function OpenWebsocket() {
+                Socket = new WebSocket("ws://192.168.1.119:81/");
+                Socket.onopen = function() {
+                	document.getElementById("connectButton").disabled = true;
+                    document.getElementById("disconnectButton").disabled = false;
+               };
+                Socket.onclose = function() {
+                	document.getElementById("connectButton").disabled = false;
+                    document.getElementById("disconnectButton").disabled = true;
+                    alert("Connection closed");
+               };
+         }
+ 
+         function CloseWebsocket(){
+            Socket.close();
+         }
+ 
+         function sendTurn(){
+      Socket.send("#"+document.getElementById("slider_2").value);
+    }  
+ 
+      </script>
+      <div>
+<button onclick = "OpenWebsocket()" id = "connectButton">CONNECT</button>
+<button onclick = "CloseWebsocket()" disabled = "true" id = "disconnectButton">DISCONNECT</button>
+</div>
+<input type="range" id="slider" value="0" min="0" max="100" step="1" oninput="sendThrottle()"/>
+<span id="slider_value">0</span>
+
+
+<input type="range" id="slider_2" value="90" min="0" max="180" step="1" oninput="sendTurn()"/>
+<span id="slider_value_2">90</span>
+<script src="/js.js"></script>
+
+
+  
+  
+<script>
+
+var mouseEventTypes = {
+touchstart : "mousedown",
+touchmove : "mousemove",
+touchend : "mouseup"
+};
+
+
+for (originalType in mouseEventTypes) {
+document.addEventListener(originalType, function(originalEvent) {
+event = document.createEvent("MouseEvents");
+touch = originalEvent.changedTouches[0];
+event.initMouseEvent(mouseEventTypes[originalEvent.type], true, true,
+window, 0, touch.screenX, touch.screenY, touch.clientX,
+touch.clientY, touch.ctrlKey, touch.altKey, touch.shiftKey,
+touch.metaKey, 0, null);
+originalEvent.target.dispatchEvent(event);
+});
+}
+
+$(document).on('input change', '#slider', function() {
+    $('#slider_value').html($(this).val());
+});
+
+$(document).on("mouseup", '#slider', function() {
+    $('#slider').val(0);
+    $('#slider_value').html(0);
+});
+
+
+$(document).on('input change', '#slider_2', function() {
+    $('#slider_value_2').html($(this).val());
+});
+$(document).on("mouseup", '#slider_2', function() {
+    $('#slider_2').val(90);
+    $('#slider_value_2').html(90);
+});
+</script>
+
+</body>
+</html>
