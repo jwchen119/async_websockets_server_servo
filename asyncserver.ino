@@ -10,8 +10,8 @@ Servo myservo;  // create servo object to control a servo
 
 static const int servoPin = 18;
 
-const char* ssid = "WDR4300";
-const char* password = "julyhouse3565472";
+const char* ssid = "ssid";
+const char* password = "pass";
 
 long ESP32_send_LastTime;
 int ESP32_send_Rate = 20;
